@@ -1,5 +1,7 @@
-module Xeditable
-  module Rails
-    VERSION = "0.0.1"
+module X
+  module Editable
+    module Rails
+      VERSION = "0.0.1"
+    end
   end
 end
