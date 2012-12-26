@@ -33,7 +33,7 @@ You can choose between bootstrap/jqueryui/jquery and inline version
 And this to your stylesheets
 
 ```scss
-*= require bootstra-editable
+*= require bootstrap-editable
 ```
 
 Choose between bootstrap/jqueryui/jquery
@@ -59,6 +59,11 @@ You need to specify:
 When updating nested attributes also:
 1. data-nested
 2. data-nid
+
+And don't forget to activate it
+```coffee
+$('.editable').editable()
+```
 
 ## Contributing
 
