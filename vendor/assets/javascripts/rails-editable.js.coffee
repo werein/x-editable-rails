@@ -6,14 +6,16 @@ jQuery ($) ->
     nestedName = @options.nested
     nestedId =  @options.nid
     @options.url = (params) =>
+      myName = params.name
+      myValue = params.value.replace(/(\r\n|\n|\r)/gm,"<br/>")
       obj = {}
       if nestedName
         nested = {}
-        nested[params.name] = params.value
+        nested[myName] = myValue
         nested['id'] = nestedId
         obj[nestedName + '_attributes'] = nested
       else
-        obj[params.name] = params.value
+        obj[myName] = myValue
       params[model] = obj
       delete params.name
       delete params.value
