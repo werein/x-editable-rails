@@ -21,34 +21,51 @@ Or install it yourself as:
 Insert files to your application
 
 ```coffee
-#= require bootstrap-editable
+#= require editable/bootstrap-editable
 ```
-or
-```coffee
-#= require bootstrap-editable-inline
-```
-
-You can choose between bootstrap/jqueryui/jquery and inline version
-
-And this to your stylesheets
+You can choose between bootstrap-editable/jqueryui-editable/jquery-editable-poshytip
 
 ```scss
-*= require bootstrap-editable
+*= require editable/bootstrap-editable
 ```
+You can choose between bootstrap-editable/jqueryui-editable/jquery-editable
 
-Choose between bootstrap/jqueryui/jquery
 
 You can also insert this file
 ```coffee
-#= require rails-editable
+#= require editable/rails
 ```
-And you'll be able update everything directly.
+
+This is simple helper using CanCan
+
+First you need to create simple helper, which returns true or false (if is editable enabled or not)
+
+```ruby
+def xeditable?
+  true # Or something like current_user.xeditable?
+end
+```
+
+and this is how to use helper method
+
+```ruby
+%h1= editable Page, @page, 'name', e: @page.name
+# editable Model, object, what_you_want_update, e: exception - when is xeditable? false or can? :edit, Model is false
+```
+
+or with nested attributes (globalize3 example) 
+```ruby
+%h1= editable Page, @page, 'name', nested: 'translations', nid: @page.translation.id, e: @page.name
+# nested: nested attributes, nid: id of nested attribute
+```
+
+You can also update everything directly.
 ```haml
-%a{href: "#", class: "editable",'data-type' => 'text', 'data-model' => "post", 'data-name' => "name", 'data-url' => post_path(post), 'data-original-title' => "Your info here"}= post.name
+%a{href: '#', class: 'editable', data: { type: 'text', model: 'post', name: 'name', url: post_path(post), 'original-title' => 'Your info here'}}= post.name
 ```
 or if nested
 ```haml
-%a{href: "#", class: "editable",'data-type' => 'text', 'data-model' => "post", 'data-nested' => 'post_translations', 'data-name' => "name", 'data-nid' => "#{post.translation.id}", 'data-url' => post_path(post), 'data-original-title' => "Your info here"}= post.name
+%a{href: '#', class: 'editable', data: { type: 'text', model: 'post', nested: 'translations', name: 'name', nid: '#{post.translation.id}', url: post_path(post), 'original-title' => 'Your info here'}}= post.name
 ```
 
 You need to specify:

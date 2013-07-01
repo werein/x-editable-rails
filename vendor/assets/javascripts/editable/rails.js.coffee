@@ -5,6 +5,7 @@ jQuery ($) ->
     model = @options.model
     nestedName = @options.nested
     nestedId =  @options.nid
+    nestedLocale = @options.locale
     @options.url = (params) =>
       myName = params.name
       myValue = params.value.replace(/(\r\n|\n|\r)/gm,"<br/>")
@@ -13,6 +14,8 @@ jQuery ($) ->
         nested = {}
         nested[myName] = myValue
         nested['id'] = nestedId
+        if nestedLocale
+          nested['locale'] = nestedLocale
         obj[nestedName + '_attributes'] = nested
       else
         obj[myName] = myValue
