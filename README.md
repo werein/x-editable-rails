@@ -65,7 +65,7 @@ You can also update everything directly.
 ```
 or if nested
 ```haml
-%a{href: '#', class: 'editable', data: { type: 'text', model: 'post', nested: 'translations', name: 'name', nid: '#{post.translation.id}', url: post_path(post), 'original-title' => 'Your info here'}}= post.name
+%a{href: '#', class: 'editable', data: { type: 'text', model: 'post', nested: 'translations', name: 'name', nid: "#{post.translation.id}", url: post_path(post), 'original-title' => 'Your info here'}}= post.name
 ```
 
 You need to specify:
