@@ -59,6 +59,11 @@ or with nested attributes (globalize3 example)
 # nested: nested attributes, nid: id of nested attribute
 ```
 
+Example of nested resource
+```ruby
+%h1= editable Picture, [picture.gallery, picture], 'name', nested: 'translations', nid: picture.translation.id, e: picture.name
+```
+
 You can also update everything directly.
 ```haml
 %a{href: '#', class: 'editable', data: { type: 'text', model: 'post', name: 'name', url: post_path(post), 'original-title' => 'Your info here'}}= post.name
