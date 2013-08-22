@@ -49,19 +49,19 @@ end
 and this is how to use helper method
 
 ```ruby
-%h1= editable Page, @page, 'name', e: @page.name
-# editable Model, object, what_you_want_update, e: exception - when is xeditable? false or can? :edit, Model is false
+%h1= editable @page, 'name', e: @page.name
+# editable object, what_you_want_update, e: exception - when is xeditable? false or can? :edit, object is false
 ```
 
 or with nested attributes (globalize3 example) 
 ```ruby
-%h1= editable Page, @page, 'name', nested: 'translations', nid: @page.translation.id, e: @page.name
+%h1= editable @page, 'name', nested: 'translations', nid: @page.translation.id, e: @page.name
 # nested: nested attributes, nid: id of nested attribute
 ```
 
 Example of nested resource
 ```ruby
-%h1= editable Picture, [picture.gallery, picture], 'name', nested: 'translations', nid: picture.translation.id, e: picture.name
+%h1= editable [picture.gallery, picture], 'name', nested: 'translations', nid: picture.translation.id, e: picture.name
 ```
 
 You can also update everything directly.
