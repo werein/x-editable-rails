@@ -9,8 +9,17 @@ module X
             model = object.class.to_s.downcase
             model_param = model.gsub('::', '_')
             model_name = model.gsub('::', '/')
-            content_tag :a, href: "#", class: "editable", data: { type: 'text', model: model_param, name: method, url: data_url, 
-              nested: (options[:nested] if options[:nested]), nid: (options[:nid] if options[:nid]), 'original-title' => t("activerecord.attributes.#{model_name}#{"/#{options[:nested].singularize}" if options[:nested]}.#{method}") } do
+            klass = options[:nested] ? object.class.const_get(options[:nested].singularize.capitalize) : object.class
+            content_tag :a, href: "#", class: "editable",
+            data: { 
+              type: 'text', 
+              model: model_param, 
+              name: method, 
+              url: data_url, 
+              nested: (options[:nested] if options[:nested]), 
+              nid: (options[:nid] if options[:nid]), 
+              :'original-title' => klass.human_attribute_name(method)
+            } do
                 object.send(method) 
             end
           else
