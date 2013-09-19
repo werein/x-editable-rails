@@ -22,7 +22,7 @@ jQuery ($) ->
           obj[nestedName + '_attributes'] = nested
         else
           obj[myName] = myValue
-          params[model] = obj
+        params[model] = obj
         delete params.name
         delete params.value
         delete params.pk
