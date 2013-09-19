@@ -9,7 +9,7 @@ module X
             model = object.class.to_s.downcase
             model_param = model.gsub('::', '_')
             model_name = model.gsub('::', '/')
-            klass = options[:nested] ? object.class.const_get(options[:nested].singularize.capitalize) : object.class
+            klass = options[:nested] ? object.class.const_get(options[:nested].to_s.singularize.capitalize) : object.class
             content_tag :a, href: "#", class: "editable",
             data: { 
               type: 'text', 
