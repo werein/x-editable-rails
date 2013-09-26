@@ -87,6 +87,29 @@ And don't forget to activate it
 $('.editable').editable()
 ```
 
+Wysihtml5 editor
+
+If you want edit text with wysihtml5 editor, you need to load his dependencies
+For js
+```coffee
+#= require editable/bootstrap-editable
+#= require editable/inputs-ext/bootstrap-wysihtml5/wysihtml5
+#= require editable/inputs-ext/bootstrap-wysihtml5/bootstrap-wysihtml5
+#= require editable/inputs-ext/wysihtml5
+#= require editable/rails
+```
+
+And css
+```sass
+//= require editable/bootstrap-editable
+//= require editable/inputs-ext/bootstrap-wysihtml5
+//= require editable/inputs-ext/wysiwyg-color
+```
+
+```ruby
+= editable @page, :content, nested: :translations, nid: @page.translation.id, type: :wysihtml5, e: @page.content.html_safe
+```
+
 ## Contributing
 
 1. Fork it

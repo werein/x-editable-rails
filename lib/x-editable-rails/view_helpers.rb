@@ -18,7 +18,7 @@ module X
               nested: options[:nested], 
               nid: options[:nid]
             } do
-                object.send(method) 
+                object.send(method).try(:html_safe)
             end
           else
             options[:e]
