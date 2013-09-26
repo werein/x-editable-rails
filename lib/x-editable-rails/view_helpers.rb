@@ -9,9 +9,10 @@ module X
             model = object.class.to_s.downcase
             model_param = model.gsub('::', '_')
             klass = options[:nested] ? object.class.const_get(options[:nested].to_s.singularize.capitalize) : object.class
+
             title = options.fetch(:title) { "Click to edit" }
-            content_tag :a, href: "#", class: "editable", title: title,
-            data: {
+
+            data_options = {
               type: 'text',
               model: model_param,
               name: method,
@@ -19,9 +20,16 @@ module X
               nested: (options[:nested] if options[:nested]),
               nid: (options[:nid] if options[:nid]),
               :'original-title' => klass.human_attribute_name(method)
-            } do
-                object.send(method)
-            end
+            }
+
+            link_options = {
+              href: "#",
+              class: "editable",
+              title: title,
+              data:  data_options
+            }
+
+            content_tag(:a, object.send(method), link_options)
           else
             options[:e]
           end
