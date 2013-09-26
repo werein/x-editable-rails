@@ -8,7 +8,6 @@ module X
           if can? :edit, object and xeditable?
             model = object.class.to_s.downcase
             model_param = model.gsub('::', '_')
-            model_name = model.gsub('::', '/')
             klass = options[:nested] ? object.class.const_get(options[:nested].to_s.singularize.capitalize) : object.class
             title = options.fetch(:title) { "Click to edit" }
             content_tag :a, href: "#", class: "editable", title: title,
