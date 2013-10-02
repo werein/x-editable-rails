@@ -23,12 +23,12 @@ Insert files to your application
 ```coffee
 #= require editable/bootstrap-editable
 ```
-You can choose between bootstrap-editable/jqueryui-editable/jquery-editable-poshytip
+You can choose between bootstrap-editable/bootstrap2-editable/jqueryui-editable/jquery-editable-poshytip
 
 ```scss
 *= require editable/bootstrap-editable
 ```
-You can choose between bootstrap-editable/jqueryui-editable/jquery-editable
+You can choose between bootstrap-editable/bootstrap2-editable/jqueryui-editable/jquery-editable
 
 
 You can also insert this file
@@ -93,9 +93,9 @@ If you want edit text with wysihtml5 editor, you need to load his dependencies
 For js
 ```coffee
 #= require editable/bootstrap-editable
-#= require editable/inputs-ext/bootstrap-wysihtml5/wysihtml5
-#= require editable/inputs-ext/bootstrap-wysihtml5/bootstrap-wysihtml5
 #= require editable/inputs-ext/wysihtml5
+#= require editable/inputs-ext/bootstrap-wysihtml5
+#= require editable/inputs-ext/wysihtml5-editable
 #= require editable/rails
 ```
 
