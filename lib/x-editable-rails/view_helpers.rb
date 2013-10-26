@@ -6,8 +6,8 @@ module X
           data_url = polymorphic_path(object)
           object   = object.last if object.kind_of?(Array)
           
-          value = object.send(method)
-          value = value.html_safe if value.respond_to? :html_safe
+          safe_value = value = object.send(method)
+          safe_value = value.html_safe if value.respond_to? :html_safe
           
           if xeditable? and can?(:edit, object)
             model_param = object.class.name.split('::').last.underscore
@@ -19,13 +19,14 @@ module X
               type:   options.fetch(:type, 'text'), 
               model:  model_param, 
               name:   method, 
+              value:  value, 
               url:    data_url, 
               nested: options[:nested], 
               nid:    options[:nid]
             }.merge options.fetch(:data, {})
             
             content_tag tag, class: 'editable', title: title, data: data do
-              value
+              safe_value
             end
           else
             options.fetch(:e, value)
