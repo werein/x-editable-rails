@@ -6,6 +6,9 @@ module X
           data_url = polymorphic_path(object)
           object   = object.last if object.kind_of?(Array)
           
+          value = object.send(method)
+          value = value.html_safe if value.respond_to? :html_safe
+          
           if xeditable? and can?(:edit, object)
             model_param = object.class.name.split('::').last.underscore
             klass = options[:nested] ? object.class.const_get(options[:nested].to_s.singularize.capitalize) : object.class
@@ -22,10 +25,10 @@ module X
             }.merge options.fetch(:data, {})
             
             content_tag tag, class: 'editable', title: title, data: data do
-              object.send(method).try(:html_safe)
+              value
             end
           else
-            options.fetch(:e, object.send(method)).try(:html_safe)
+            options.fetch(:e, value)
           end
         end
       end
