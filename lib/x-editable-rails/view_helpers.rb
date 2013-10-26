@@ -6,6 +6,8 @@ module X
           url     = polymorphic_path(object)
           object  = object.last if object.kind_of?(Array)
           value   = options.delete(:value){ object.send(method) }
+          data    = options.fetch(:data, {})
+          source  = data[:source] ? format_source(data.delete(:source), value) : default_source_for(value)
           
           if xeditable? and can?(:edit, object)
             model = object.class.name.split('::').last.underscore
@@ -14,21 +16,23 @@ module X
             output_value = output_value_for(value)
             tag   = options.fetch(:tag, 'span')
             title = options.fetch(:title, klass.human_attribute_name(method))
-            data  = { 
+            data  = {
               type:   options.fetch(:type, 'text'), 
               model:  model, 
               name:   method, 
               value:  output_value, 
+              source: source, 
               url:    url, 
               nested: options[:nested], 
               nid:    options[:nid]
-            }.merge options.fetch(:data, {})
+            }.merge(data)
             
-            content_tag tag, class: 'editable', title: title, data: data do
-              safe_value
+            content_tag tag, class: css, title: title, data: data do
+              source_value_for(value, source)
             end
           else
-            options.fetch(:e, value)
+            # create a friendly value using the source to display a default value (if no error message given)
+            options.fetch(:e){ source_value_for(value, source) }
           end
         end
         
@@ -47,6 +51,18 @@ module X
           end
           
           value.html_safe
+        end
+        
+        def source_value_for(value, source = nil)
+          source ||= default_source_for value
+          source ? source[output_value_for value] : value
+        end
+        
+        def default_source_for(value)
+          case value
+          when TrueClass, FalseClass
+            { '1' => 'Yes', '0' => 'No' }
+          end
         end
       end
     end
