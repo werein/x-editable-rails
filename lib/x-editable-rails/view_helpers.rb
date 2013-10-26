@@ -1,7 +1,18 @@
 module X
   module Editable
     module Rails
-      module ViewHelpers  
+      module ViewHelpers
+        # options:
+        #   tag:   tag name of element returned
+        #   class: "class" attribute on element
+        #   title: "title" attribute on element
+        #   data:  "data-*" attributes on element
+        #     source: a Hash of friendly display values used by input elements based on (object) value
+        #       - boolean shorthand ['Enabled', 'Disabled'] becomes { '1' => 'Enabled', '0' => 'Disabled' }
+        #       - enumerable shorthand ['Yes', 'No', 'Maybe'] becomes { 'Yes' => 'Yes', 'No' => 'No', 'Maybe' => 'Maybe' }
+        #     classes: a Hash of classes to add based on the value (same format and shorthands as source)
+        #   value: override the object's value
+        #   
         def editable(object, method, options = {})
           url     = polymorphic_path(object)
           object  = object.last if object.kind_of?(Array)
