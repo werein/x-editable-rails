@@ -8,6 +8,7 @@ module X
           value   = options.delete(:value){ object.send(method) }
           data    = options.fetch(:data, {})
           source  = data[:source] ? format_source(data.delete(:source), value) : default_source_for(value)
+          classes = format_source(data.delete(:classes), value)
           
           if xeditable? and can?(:edit, object)
             model = object.class.name.split('::').last.underscore
@@ -15,6 +16,8 @@ module X
             
             output_value = output_value_for(value)
             css_list = options[:class].to_s.split(/s+/).unshift('editable')
+            css_list << classes[output_value] if classes
+            
             css   = css_list.compact.uniq.join(' ')
             tag   = options.fetch(:tag, 'span')
             title = options.fetch(:title){ klass.human_attribute_name(method) }
@@ -23,11 +26,14 @@ module X
               model:  model, 
               name:   method, 
               value:  output_value, 
+              classes: classes, 
               source: source, 
               url:    url, 
               nested: options[:nested], 
               nid:    options[:nid]
             }.merge(data)
+            
+            data.reject!{|_, value| value.nil?}
             
             content_tag tag, class: css, title: title, data: data do
               source_value_for(value, source)
@@ -66,6 +72,23 @@ module X
             { '1' => 'Yes', '0' => 'No' }
           end
         end
+        
+        # helper method that take some shorthand source definitions and reformats them
+        def format_source(source, value)
+          formatted_source = case value
+            when TrueClass, FalseClass
+              if source.is_a?(Array) && source.first.is_a?(String) && source.size == 2
+                { '1' => source[0], '0' => source[1] }
+              end
+            when String
+              if source.is_a?(Array) && source.first.is_a?(String)
+                source.inject({}){|hash, key| hash.merge(key => key)}
+              end
+            end
+          
+          formatted_source || source
+        end
+        
       end
     end
   end
