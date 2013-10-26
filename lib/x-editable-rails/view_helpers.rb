@@ -6,7 +6,7 @@ module X
           data_url = polymorphic_path(object)
           object   = object.last if object.kind_of?(Array)
           
-          if can? :edit, object and xeditable?
+          if xeditable? and can?(:edit, object)
             model_param = object.class.name.split('::').last.underscore
             klass = options[:nested] ? object.class.const_get(options[:nested].to_s.singularize.capitalize) : object.class
             
