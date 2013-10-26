@@ -19,7 +19,7 @@ module X
               url:    data_url, 
               nested: options[:nested], 
               nid:    options[:nid]
-            }
+            }.merge options.fetch(:data, {})
             
             content_tag tag, class: 'editable', title: title, data: data do
               object.send(method).try(:html_safe)
