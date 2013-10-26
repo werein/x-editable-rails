@@ -7,8 +7,7 @@ module X
           object   = object.last if object.kind_of?(Array)
           
           if can? :edit, object and xeditable?
-            model = object.class.to_s.downcase
-            model_param = model.gsub('::', '_')
+            model_param = object.class.name.split('::').last.underscore
             klass = options[:nested] ? object.class.const_get(options[:nested].to_s.singularize.capitalize) : object.class
             
             tag   = options.fetch(:tag, 'span')
