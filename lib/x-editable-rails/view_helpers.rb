@@ -25,7 +25,7 @@ module X
               object.send(method).try(:html_safe)
             end
           else
-            options[:e]
+            options.fetch(:e, object.send(method)).try(:html_safe)
           end
         end
       end
