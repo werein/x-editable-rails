@@ -17,7 +17,7 @@ module X
             css_list = options[:class].to_s.split(/s+/).unshift('editable')
             css   = css_list.compact.uniq.join(' ')
             tag   = options.fetch(:tag, 'span')
-            title = options.fetch(:title, klass.human_attribute_name(method))
+            title = options.fetch(:title){ klass.human_attribute_name(method) }
             data  = {
               type:   options.fetch(:type, 'text'), 
               model:  model, 
