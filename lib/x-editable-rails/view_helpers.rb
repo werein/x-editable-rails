@@ -5,7 +5,8 @@ module X
         # options:
         #   tag:   tag name of element returned
         #   class: "class" attribute on element
-        #   title: "title" attribute on element
+        #   placeholder: "placeholder" attribute on element
+        #   title: "title" attribute on element (defaults to placeholder)
         #   data:  "data-*" attributes on element
         #     source: a Hash of friendly display values used by input elements based on (object) value
         #       - boolean shorthand ['Enabled', 'Disabled'] becomes { '1' => 'Enabled', '0' => 'Disabled' }
@@ -14,6 +15,8 @@ module X
         #   value: override the object's value
         #   
         def editable(object, method, options = {})
+          options = Configuration.method_options_for(object, method).deep_merge(options).with_indifferent_access
+          
           url     = polymorphic_path(object)
           object  = object.last if object.kind_of?(Array)
           value   = options.delete(:value){ object.send(method) }
@@ -31,12 +34,14 @@ module X
             
             css   = css_list.compact.uniq.join(' ')
             tag   = options.fetch(:tag, 'span')
-            title = options.fetch(:title){ klass.human_attribute_name(method) }
+            placeholder = options.fetch(:placeholder){ klass.human_attribute_name(method) }
+            title = options.fetch(:title){ placeholder }
             data  = {
               type:   options.fetch(:type, 'text'), 
               model:  model, 
               name:   method, 
               value:  output_value, 
+              placeholder: placeholder, 
               classes: classes, 
               source: source, 
               url:    url, 
