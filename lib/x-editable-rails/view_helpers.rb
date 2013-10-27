@@ -62,7 +62,7 @@ module X
             
             options.reject!{|_, value| value.nil?}
             
-            content_tag tag, class: css, title: title, data: options do
+            content_tag tag, class: css, title: title, data: data do
               source_value_for(value, source)
             end
           else
