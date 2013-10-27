@@ -2,6 +2,9 @@ module X
   module Editable
     module Rails
       module ViewHelpers
+        #
+        # Options determine how the HTML tag is rendered and the remaining options are converted to data-* attributes.
+        #
         # options:
         #   tag:   tag name of element returned
         #   class: "class" attribute on element
@@ -16,28 +19,36 @@ module X
         #   
         def editable(object, method, options = {})
           options = Configuration.method_options_for(object, method).deep_merge(options).with_indifferent_access
+          # merge data attributes for backwards-compatibility
+          options.merge! options.delete(:data){ Hash.new }
           
-          url     = polymorphic_path(object)
+          url     = options.delete(:url){ polymorphic_path(object) }
           object  = object.last if object.kind_of?(Array)
           value   = options.delete(:value){ object.send(method) }
-          data    = options.fetch(:data, {})
-          source  = data[:source] ? format_source(data.delete(:source), value) : default_source_for(value)
-          classes = format_source(data.delete(:classes), value)
+          source  = options[:source] ? format_source(options.delete(:source), value) : default_source_for(value)
+          classes = format_source(options.delete(:classes), value)
+          error   = options.delete(:e)
           
           if xeditable? and can?(:edit, object)
-            model = object.class.name.split('::').last.underscore
-            klass = options[:nested] ? object.class.const_get(options[:nested].to_s.singularize.capitalize) : object.class
+            model       = object.class.name.split('::').last.underscore
+            nid         = options.delete(:nid)
+            nested      = options.delete(:nested)
+            placeholder = options.delete(:placeholder) do
+              klass = nested ? object.class.const_get(nested.to_s.singularize.capitalize) : object.class
+              klass.human_attribute_name(method)
+            end
             
             output_value = output_value_for(value)
-            css_list = options[:class].to_s.split(/s+/).unshift('editable')
+            css_list = options.delete(:class).to_s.split(/s+/).unshift('editable')
             css_list << classes[output_value] if classes
             
             css   = css_list.compact.uniq.join(' ')
-            tag   = options.fetch(:tag, 'span')
-            placeholder = options.fetch(:placeholder){ klass.human_attribute_name(method) }
-            title = options.fetch(:title){ placeholder }
+            tag   = options.delete(:tag){ 'span' }
+            title = options.delete(:title){ placeholder }
+            
+            # any remaining options become data attributes
             data  = {
-              type:   options.fetch(:type, 'text'), 
+              type:   options.delete(:type){ 'text' }, 
               model:  model, 
               name:   method, 
               value:  output_value, 
@@ -45,18 +56,18 @@ module X
               classes: classes, 
               source: source, 
               url:    url, 
-              nested: options[:nested], 
-              nid:    options[:nid]
-            }.merge(data)
+              nested: nested, 
+              nid:    nid
+            }.merge(options)
             
-            data.reject!{|_, value| value.nil?}
+            options.reject!{|_, value| value.nil?}
             
-            content_tag tag, class: css, title: title, data: data do
+            content_tag tag, class: css, title: title, data: options do
               source_value_for(value, source)
             end
           else
             # create a friendly value using the source to display a default value (if no error message given)
-            options.fetch(:e){ source_value_for(value, source) }
+            error || source_value_for(value, source)
           end
         end
         
