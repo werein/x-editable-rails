@@ -30,10 +30,10 @@ module X
           error   = options.delete(:e)
           
           if xeditable? and can?(:edit, object)
-            model       = object.class.name.split('::').last.underscore
-            nid         = options.delete(:nid)
-            nested      = options.delete(:nested)
-            placeholder = options.delete(:placeholder) do
+            model   = object.class.name.split('::').last.underscore
+            nid     = options.delete(:nid)
+            nested  = options.delete(:nested)
+            title   = options.delete(:title) do
               klass = nested ? object.class.const_get(nested.to_s.singularize.capitalize) : object.class
               klass.human_attribute_name(method)
             end
@@ -44,11 +44,11 @@ module X
             
             css   = css_list.compact.uniq.join(' ')
             tag   = options.delete(:tag){ 'span' }
-            title = options.delete(:title){ placeholder }
+            placeholder = options.delete(:placeholder){ title }
             
             # any remaining options become data attributes
             data  = {
-              type:   options.delete(:type){ 'text' }, 
+              type:   options.delete(:type){ default_type_for(value) }, 
               model:  model, 
               name:   method, 
               value:  output_value, 
@@ -91,6 +91,15 @@ module X
         def source_value_for(value, source = nil)
           source ||= default_source_for value
           source ? source[output_value_for value] : value
+        end
+        
+        def default_type_for(value)
+          case value
+          when TrueClass, FalseClass
+            'select'
+          else
+            'text'
+          end
         end
         
         def default_source_for(value)
