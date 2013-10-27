@@ -60,7 +60,7 @@ module X
               nid:    nid
             }.merge(options)
             
-            options.reject!{|_, value| value.nil?}
+            data.reject!{|_, value| value.nil?}
             
             content_tag tag, class: css, title: title, data: data do
               source_value_for(value, source)
