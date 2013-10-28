@@ -46,13 +46,13 @@ module X
         
         private
         
-        # class options can have string as the placeholder by default, convert to Hash
+        # if the specified options are a string, convert to Hash and make the string the title
         def format_class_options!(options)
           if class_options = options[:class_options]
             class_options.each do |class_name, methods|
               methods.each do |method, method_options|
                 unless method_options.is_a? Hash
-                  methods[method] = { placeholder: method_options }.with_indifferent_access
+                  methods[method] = { title: method_options }.with_indifferent_access
                 end
               end
             end
