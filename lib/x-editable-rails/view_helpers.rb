@@ -63,11 +63,11 @@ module X
             data.reject!{|_, value| value.nil?}
             
             content_tag tag, class: css, title: title, data: data do
-              source_value_for(value, source)
+              source_values_for(value, source).join('<br/>').html_safe
             end
           else
             # create a friendly value using the source to display a default value (if no error message given)
-            error || source_value_for(value, source)
+            error || source_values_for(value, source).join('<br/>').html_safe
           end
         end
         
@@ -81,6 +81,8 @@ module X
             '0'
           when NilClass
             ''
+          when Array
+            value.map{|item| output_value_for item}.join(',')
           else
             value.to_s
           end
@@ -88,15 +90,24 @@ module X
           value.html_safe
         end
         
-        def source_value_for(value, source = nil)
+        def source_values_for(value, source = nil)
           source ||= default_source_for value
-          source ? source[output_value_for value] : value
+          
+          values = Array.wrap(value)
+          
+          if source
+            values.map{|item| source[output_value_for item]}
+          else
+            values
+          end
         end
         
         def default_type_for(value)
           case value
           when TrueClass, FalseClass
             'select'
+          when Array
+            'checklist'
           else
             'text'
           end

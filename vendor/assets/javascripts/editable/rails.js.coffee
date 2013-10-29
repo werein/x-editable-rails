@@ -11,7 +11,10 @@ jQuery ($) ->
         originalUrl.call(@options.scope, params)
       else if originalUrl? && @options.send != 'never'
         myName = params.name
-        myValue = params.value.replace(/(\r\n|\n|\r)/gm,"<br/>")
+        if typeof params.value == 'string'
+          myValue = params.value.replace(/(\r\n|\n|\r)/gm,"<br/>")
+        else
+          myValue = params.value
         obj = {}
         if nestedName
           nested = {}
