@@ -14,7 +14,6 @@
 
 jQuery ($) ->
   $("[data-classes]").on "save", (e, data) ->
-    console?.log('data', data, 'event', e)
     value = data.newValue
     element = $(this)
     css = element.data('classes') || {}
