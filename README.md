@@ -98,19 +98,24 @@ Here are some special features to enhance what's baked into [x-editable](http://
 
 * **type** - The type of input is automatically detected. By default, if the value is a boolean, the `type` is "select" with a built-in `source` that outputs "Yes" and "No" (unless another `source` is specified).
 * **source** - In addition to hashes or arrays of hashes, you can also use an array of strings for a simpler structure if the name and value are the same:
+
 ```ruby
 source = [ "Active", "Disabled" ]
 editable @model, :enabled, source: source
 ```
+
 * **value** - This option will override the `model.name` value
 * **classes** - This is a custom option for `x-editable-rails` that will change the editable element's CSS class based on the selected value. Use the `source` hash structure to map a CSS class name to a value. (This [functionality](vendor/assets/javascripts/editable/rails/data_classes.js.coffee) is toggled when the value changes and the "save" event is triggered.)
+
 ```ruby
 source  = [ "Active", "Disabled" ]
 classes = { "Active" => "label-success", "Disabled" => "label-default" }
 editable @model, :enabled, source: source, classes: classes, class: "label"
 ```
+
 * **nested** - Name of a nested attributes (such as [gobalize](https://github.com/globalize/globalize)'s `translations`)
 * **nid** - ID of the nested attribute
+
 ```ruby
 %h1= editable @model, :name, nested: :translations, nid: @model.translation.id
 
