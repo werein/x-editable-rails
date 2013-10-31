@@ -1,0 +1,21 @@
+class_options:
+  MailingList:
+    # Specify placeholder text for each attribute or a Hash of options
+    name: Mailing list name
+    enabled:
+      type: select
+      source:
+        - Active
+        - Disabled
+    reply_email:
+      type: email
+      title: Reply-to email
+  User:
+    email:
+      type: email
+    password:
+      type: password
+    mailing_lists:
+      type: select
+      # specify a URL to get source via AJAX (see x-editable docs)
+      source: <%= ::Rails.application.routes.url_helpers.mailing_lists_source_path %>
