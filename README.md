@@ -27,8 +27,11 @@ Choose between the following javascripts:
 * jqueryui-editable
 * jquery-editable-poshytip
 
+You'll also need to include editable/rails in your scripts for this to work.
+
 ```coffee
 #= require editable/bootstrap-editable
+#= require editable/rails
 ```
 
 Choose the corresponding stylesheets:
