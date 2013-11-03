@@ -84,12 +84,16 @@ A `span` element is rendered with `data-*` attributes used by `x-editable`.
 %h1= editable @model, :name
 ```
 
-The helper method automatically adds these `data-*` attributes used by [x-editable](http://vitalets.github.io/x-editable/docs.html).
+You can customize the tag name and title attribute:
+
+* **tag** - `span` by default.
+* **title** - The model and attribute name are used to create a capitalized title
+
+The `editable` helper method automatically adds these `data-*` attributes used by [x-editable](http://vitalets.github.io/x-editable/docs.html).
 
 * **url** - Uses the `polymorphic_path(model)` helper method.
 * **source** - Only populated if the value is a boolean to convert `true` or `false` to "Yes" and "No".
 * **value** - Uses `model.name`. If `model.name` were a boolean value or if a `source` is specified, the `source` text would be displayed rather than the raw value. (Presumably the value is an ID and the source would have the text associated with that value.)
-* **title** - The model and attribute name are used to create a capitalized title
 * **placeholder** - Uses the `title` value by default
 
 ```ruby
