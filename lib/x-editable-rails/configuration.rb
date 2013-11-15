@@ -17,20 +17,14 @@ module X
         end
         
         def options
-          default_options.deep_merge custom_options
-        end
-        
-        def default_options
-          @defaults ||= begin
-            options = load_yaml_file File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "config", "x-editable.yml"))
-            format_class_options! options
-          end
-        end
-        
-        def custom_options
-          @custom_options ||= begin
-            options = load_yaml_file ::Rails.root.join("config", "x-editable.yml")
-            format_class_options! options
+          config_fn = ::Rails.root.join("config", "x-editable.yml")
+          if File.file?(config_fn)
+            @options ||= begin
+              options = load_yaml_file config_fn
+              format_class_options! options
+            end
+          else
+            @options = {}
           end
         end
         
