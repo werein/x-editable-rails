@@ -161,7 +161,7 @@ This example uses the `MailingList` class and its attributes.
 The attribute value can be a string, which is used as the `title` and `placeholder`. 
 If you want to specify other options, create a hash of options.
 
-Save your YAML file in: `config/x-editable.yml`. Here is an example [example](config/x-editable.yml).
+Install configuration file like this: `rails g x_editable_rails:install`, this step is not necessary 
 
 ```yaml
 class_options:
