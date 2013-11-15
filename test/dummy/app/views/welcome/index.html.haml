@@ -1,0 +1,16 @@
+%h1 Welcome#index
+%p Find me in app/views/welcome/index.html.haml
+
+.pull-right
+  = link_to 'Denied access', root_path(denied: true)
+  |
+  = link_to 'Enabled access', root_path
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Description
+      %th Example
+      %th Code
+  %tbody
+    = render @pages

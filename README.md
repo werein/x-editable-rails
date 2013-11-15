@@ -196,6 +196,18 @@ editable model, :name    # type: "text",   title: "Mailing list name"
 editable model, :enabled # type: "select", title: "Enabled", source: [ "Active", "Disabled" ]
 ```
 
+### Examples
+
+Gem also contains demo application with integrated x-editable
+
+```
+cd test/dummy
+rake db:migrate
+rake db:seed
+rails g x_editable_rails:install # optional, it generate config example
+rails s
+```
+
 ## Contributing
 
 1. Fork it
