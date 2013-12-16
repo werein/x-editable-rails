@@ -95,7 +95,7 @@ module X
           
           values = Array.wrap(value)
           
-          if source
+          if source && source.first.is_a?(String)
             values.map{|item| source[output_value_for item]}
           else
             values
@@ -130,6 +130,8 @@ module X
             when String
               if source.is_a?(Array) && source.first.is_a?(String)
                 source.inject({}){|hash, key| hash.merge(key => key)}
+              elsif source.is_a?(Hash)
+                source
               end
             end
           
