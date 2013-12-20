@@ -143,7 +143,7 @@ end
 You can use [CanCan](https://github.com/ryanb/cancan) and checks the `:edit` permission for the model being edited.
 
 ```ruby
-if xeditable? object = nil
+def xeditable? object = nil
   can?(:edit, object) ? true : false
 end
 ```
