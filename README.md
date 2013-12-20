@@ -135,18 +135,16 @@ editable @model, :enabled, source: source, classes: classes, class: "label"
 Add a helper method to your controllers to indicate if `x-editable` should be enabled.
 
 ```ruby
-def xeditable?
+def xeditable? object = nil
   true # Or something like current_user.xeditable?
 end
 ```
 
-This gem requires [CanCan](https://github.com/ryanb/cancan) and checks the `:edit` permission for the model being edited.
+You can use [CanCan](https://github.com/ryanb/cancan) and checks the `:edit` permission for the model being edited.
 
 ```ruby
-if xeditable? && can?(:edit, model)
-  ... output x-editable HTML ...
-else
-  ... output uneditable value ...
+if xeditable? object = nil
+  can?(:edit, object) ? true : false
 end
 ```
 

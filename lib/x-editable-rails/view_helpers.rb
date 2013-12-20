@@ -29,7 +29,7 @@ module X
           classes = format_source(options.delete(:classes), value)
           error   = options.delete(:e)
           
-          if xeditable? and can?(:edit, object)
+          if xeditable?(object)
             model   = object.class.name.split('::').last.underscore
             nid     = options.delete(:nid)
             nested  = options.delete(:nested)
