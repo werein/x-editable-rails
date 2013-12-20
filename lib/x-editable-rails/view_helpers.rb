@@ -39,7 +39,7 @@ module X
             end
             
             output_value = output_value_for(value)
-            css_list = options.delete(:class).to_s.split(/s+/).unshift('editable')
+            css_list = options.delete(:class).to_s.split(/\s+/).unshift('editable')
             css_list << classes[output_value] if classes
             
             css   = css_list.compact.uniq.join(' ')
