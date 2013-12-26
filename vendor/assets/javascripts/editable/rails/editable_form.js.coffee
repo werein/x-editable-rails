@@ -12,11 +12,7 @@ jQuery ($) ->
         originalUrl.call(@options.scope, params)
       else if originalUrl? && @options.send != 'never'
         myName = params.name
-        
-        if typeof params.value == 'string'
-          myValue = params.value.replace(/(\r\n|\n|\r)/gm,"<br/>")
-        else
-          myValue = params.value
+        myValue = params.value
         
         # if there are no values in a list, add a blank value so Rails knows all values were removed
         if Object.prototype.toString.call(params.value) == '[object Array]' && params.value.length == 0
