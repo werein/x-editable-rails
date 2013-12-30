@@ -63,7 +63,7 @@ module X
             data.reject!{|_, value| value.nil?}
             
             content_tag tag, class: css, title: title, data: data do
-              source_values_for(value, source).join('<br/>').html_safe
+              source_values_for(value, source).join('<br/>').html_safe if !["select","checklist"].include? data[:type]
             end
           else
             # create a friendly value using the source to display a default value (if no error message given)
