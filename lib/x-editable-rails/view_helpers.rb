@@ -28,6 +28,7 @@ module X
           source  = options[:source] ? format_source(options.delete(:source), value) : default_source_for(value)
           classes = format_source(options.delete(:classes), value)
           error   = options.delete(:e)
+          source_values = safe_join(source_values_for(value, source), tag(:br))
           
           if xeditable?(object)
             model   = object.class.name.split('::').last.underscore
@@ -63,11 +64,11 @@ module X
             data.reject!{|_, value| value.nil?}
             
             content_tag tag, class: css, title: title, data: data do
-              source_values_for(value, source).join('<br/>').html_safe
+              source_values
             end
           else
             # create a friendly value using the source to display a default value (if no error message given)
-            error || source_values_for(value, source).join('<br/>').html_safe
+            error || source_values
           end
         end
         
@@ -87,7 +88,7 @@ module X
             value.to_s
           end
           
-          value.html_safe
+          value
         end
         
         def source_values_for(value, source = nil)
