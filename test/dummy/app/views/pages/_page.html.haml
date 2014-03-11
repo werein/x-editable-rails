@@ -1,59 +1,63 @@
-%tr
+%tr{id: 'default'}
   %td String attribute
   %td= editable page, :name
   %td
     %code = editable page, :name
-%tr
+%tr{id: 'boolean'}
   %td Boolean attribute Yes/no
   %td= editable page, :active
   %td
     %code = editable page, :active
-%tr
+%tr{id: 'boolean_source'}
   %td Boolean attribute with custom source
   %td= editable page, :active, data: { source: ['Active', 'Disabled'] }
   %td
-    %code = editable page, :active, data: { source: ['Active', 'Disabled'] }
-%tr
+    %code = editable page, :active, 
+    %br/
+    %code data: { source: ['Active', 'Disabled'] }
+%tr{id: 'nested_translations'}
   %td Globalize gem example
   %td= editable page, :title, nested: :translations, nid: page.translation.id
   %td
     %code = editable page, :title, nested: :translations, nid: page.translation.id
-%tr
+%tr{id: 'select_source'}
   %td Select from given source
   %td= editable page, :name, type: :select, data: { source: ['iPhone', 'iPad', 'MacBook'] }
   %td
-    %code = editable page, :name, type: :select, data: { source: ['iPhone', 'iPad', 'MacBook'] }
-%tr
+    %code = editable page, :name, type: :select,
+    %br/
+    %code  data: { source: ['iPhone', 'iPad', 'MacBook'] }
+%tr{id: 'custom_value'}
   %td Custom value (Upcased name)
   %td= editable page, :name, value: page.name.upcase
   %td
     %code = editable page, :name, value: page.name.upcase
-%tr
+%tr{id: 'exception'}
   %td Custom exception
   %td= editable page, :name, e: "You're not authorized"
   %td
     %code = editable page, :name, e: "You're not authorized"
-%tr
+%tr{id: 'custom_title'}
   %td Custom title
   %td= editable page, :name, title: 'Your name please :)'
   %td
     %code = editable page, :name, title: 'Your name please :)'
-%tr
+%tr{id: 'custom_class'}
   %td Custom class (float right)
   %td= editable page, :name, class: 'pull-right'
   %td
     %code = editable page, :name, class: 'pull-right'
-%tr
+%tr{id: 'custom_tag'}
   %td Custom tag (its header)
   %td= editable page, :name, tag: 'h3'
   %td
     %code = editable page, :name, tag: 'h3'
-%tr
+%tr{id: 'type_textarea'}
   %td Textarea
   %td= editable page, :description, type: :textarea
   %td
     %code = editable page, :description, type: :textarea
-%tr
+%tr{id: 'type_wysihtml5'}
   %td Wysihtml5
   %td= editable page, :description, type: :wysihtml5
   %td
