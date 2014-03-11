@@ -63,11 +63,10 @@ module X
             data.reject!{|_, value| value.nil?}
             
             content_tag tag, class: css, title: title, data: data do
-              source_values_for(value, source).join('<br/>').html_safe
+              safe_join(source_values_for(value.try(:html_safe), source), tag(:br))
             end
           else
-            # create a friendly value using the source to display a default value (if no error message given)
-            error || source_values_for(value, source).join('<br/>').html_safe
+            error || safe_join(source_values_for(value.try(:html_safe), source), tag(:br))
           end
         end
         
@@ -87,7 +86,7 @@ module X
             value.to_s
           end
           
-          value.html_safe
+          value
         end
         
         def source_values_for(value, source = nil)
