@@ -66,7 +66,8 @@ module X
               safe_join(source_values_for(value.try(:html_safe), source), tag(:br))
             end
           else
-            error || safe_join(source_values_for(value.try(:html_safe), source), tag(:br))
+            value = value.try(:html_safe) unless value.kind_of?(TrueClass) or value.kind_of?(FalseClass)
+            error || safe_join(source_values_for(value, source), tag(:br))
           end
         end
         
@@ -94,7 +95,7 @@ module X
           
           values = Array.wrap(value)
           
-          if source && source.first.is_a?(String)
+          if source && ( source.first.is_a?(String) || source.kind_of?(Hash) )
             values.map{|item| source[output_value_for item]}
           else
             values
