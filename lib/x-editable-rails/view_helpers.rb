@@ -63,7 +63,7 @@ module X
             data.reject!{|_, value| value.nil?}
             
             content_tag tag, class: css, title: title, data: data do
-              safe_join(source_values_for(value.try(:html_safe), source), tag(:br))
+              safe_join(source_values_for(value.try(:html_safe), source), tag(:br)) unless %w(select checklist).include? data[:type]
             end
           else
             value = value.try(:html_safe) unless value.kind_of?(TrueClass) or value.kind_of?(FalseClass)
