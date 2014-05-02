@@ -120,7 +120,7 @@ classes = { "Active" => "label-success", "Disabled" => "label-default" }
 editable @model, :enabled, source: source, classes: classes, class: "label"
 ```
 
-* **nested** - Name of a nested attributes (such as [gobalize](https://github.com/globalize/globalize)'s `translations`)
+* **nested** - Name of a nested attributes (such as [globalize](https://github.com/globalize/globalize)'s `translations`)
 * **nid** - ID of the nested attribute
 
 ```ruby
