@@ -72,9 +72,12 @@ $(function(){
             
             return deferred.promise();
         },
+
+        valueIsEncoded: true,
        
         value2html: function(value, element) {
             $(element).html(value);
+            this.valueIsEncoded = false;
         },
 
         html2value: function(html) {
@@ -82,6 +85,7 @@ $(function(){
         },
         
         value2input: function(value) {
+            value = (this.valueIsEncoded ? atob(value) : value)
             this.$input.data("wysihtml5").editor.setValue(value, true);
         }, 
 
