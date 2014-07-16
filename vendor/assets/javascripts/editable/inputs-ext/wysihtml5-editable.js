@@ -85,7 +85,7 @@ $(function(){
         },
         
         value2input: function(value) {
-            value = (this.valueIsEncoded ? atob(value) : value)
+            value = (this.valueIsEncoded ? atob(value.replace(/\s/g, '')) : value)
             this.$input.data("wysihtml5").editor.setValue(value, true);
         }, 
 
