@@ -72,9 +72,12 @@ $(function(){
             
             return deferred.promise();
         },
+
+        valueIsEncoded: true,
        
         value2html: function(value, element) {
             $(element).html(value);
+            this.valueIsEncoded = false;
         },
 
         html2value: function(html) {
@@ -82,8 +85,13 @@ $(function(){
         },
         
         value2input: function(value) {
+            value = (this.valueIsEncoded ? this.base65decode(value) : value);
             this.$input.data("wysihtml5").editor.setValue(value, true);
-        }, 
+        },
+
+        base65decode: function(value) {
+            return decodeURIComponent( escape( atob( value.replace(/\s/g, ''))));
+        },
 
         activate: function() {
             this.$input.data("wysihtml5").editor.focus();
