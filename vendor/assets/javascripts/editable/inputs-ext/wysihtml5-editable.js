@@ -85,9 +85,13 @@ $(function(){
         },
         
         value2input: function(value) {
-            value = (this.valueIsEncoded ? atob(value.replace(/\s/g, '')) : value)
+            value = (this.valueIsEncoded ? this.base65decode(value) : value);
             this.$input.data("wysihtml5").editor.setValue(value, true);
-        }, 
+        },
+
+        base65decode: function(value) {
+            return decodeURIComponent( escape( atob( value.replace(/\s/g, ''))));
+        },
 
         activate: function() {
             this.$input.data("wysihtml5").editor.focus();
