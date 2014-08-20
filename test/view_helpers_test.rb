@@ -35,6 +35,22 @@ class ViewHelpersTest < ActionView::TestCase
                  "ViewHelpers#editable should not escape safe content"
   end
 
+  test "editable should generate content tag with html options" do
+    subject = Subject.new
+
+    assert_match %r{<span[^>]+id="subject-id"},
+                 editable(subject, :name, html: { id: 'subject-id' }),
+                 "ViewHelpers#editable should generate content tag with html options"
+
+    assert_match %r{<span[^>]+name="subject\[name\]"},
+                 editable(subject, :name, html: { name: 'subject[name]' }),
+                 "ViewHelpers#editable should generate content tag with html options"
+
+    assert_match %r{<span[^>]+title="First Title"},
+                 editable(subject, :name, title: "First Title", html: { title: 'Second Title' }),
+                 "ViewHelpers#editable should generate content tag with html options"
+  end
+
   private
 
   def view_helpers_test_subject_path(subject)

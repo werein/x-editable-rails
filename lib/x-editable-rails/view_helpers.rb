@@ -28,6 +28,7 @@ module X
           source  = options[:source] ? format_source(options.delete(:source), value) : default_source_for(value)
           classes = format_source(options.delete(:classes), value)
           error   = options.delete(:e)
+          html_options = options.delete(:html){ Hash.new }
 
           if xeditable?(object)
             model   = object.class.name.split('::').last.underscore
@@ -62,7 +63,13 @@ module X
 
             data.reject!{|_, value| value.nil?}
 
-            content_tag tag, class: css, title: title, data: data do
+            html_options.update({
+              class: css,
+              title: title,
+              data: data
+            })
+
+            content_tag tag, html_options do
               safe_join(source_values_for(value, source), tag(:br)) unless %w(select checklist).include? data[:type]
             end
           else
