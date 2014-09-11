@@ -1,3 +1,5 @@
+require 'base64'
+
 module X
   module Editable
     module Rails
@@ -42,17 +44,17 @@ module X
             output_value = output_value_for(value)
             css_list = options.delete(:class).to_s.split(/\s+/).unshift('editable')
             css_list << classes[output_value] if classes
-
+            type = options.delete(:type){ default_type_for(value) }
             css   = css_list.compact.uniq.join(' ')
             tag   = options.delete(:tag){ 'span' }
             placeholder = options.delete(:placeholder){ title }
 
             # any remaining options become data attributes
             data  = {
-              type:   options.delete(:type){ default_type_for(value) },
+              type:   type,
               model:  model,
               name:   method,
-              value:  output_value,
+              value:  ( type == 'wysihtml5' ? Base64.encode64(output_value) : output_value ), 
               placeholder: placeholder,
               classes: classes,
               source: source,
