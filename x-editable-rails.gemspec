@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib", "vendor"]
 
   spec.add_dependency "railties"
+  spec.add_dependency "i18n"
 
   spec.add_development_dependency "rails", "~> 4.0"
   spec.add_development_dependency "sqlite3"
