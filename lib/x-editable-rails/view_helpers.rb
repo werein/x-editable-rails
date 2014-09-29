@@ -83,7 +83,7 @@ module X
         private
 
         def output_value_for(value)
-          value = case value
+          case value
           when TrueClass
             '1'
           when FalseClass
@@ -95,8 +95,6 @@ module X
           else
             value.to_s
           end
-
-          value
         end
 
         def source_values_for(value, value_type, source = nil)
