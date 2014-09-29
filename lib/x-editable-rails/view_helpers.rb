@@ -27,7 +27,8 @@ module X
           url     = options.delete(:url){ polymorphic_path(object) }
           object  = object.last if object.kind_of?(Array)
           value   = options.delete(:value){ object.send(method) }
-          source  = options[:source] ? format_source(options.delete(:source), value) : default_source_for(value)
+          value_type = options.delete(:value_type){ default_value_type_for(object,method, value)}
+          source  = options[:source] ? format_source(options.delete(:source), value) : default_source_for(value_type)
           classes = format_source(options.delete(:classes), value)
           error   = options.delete(:e)
           html_options = options.delete(:html){ Hash.new }
@@ -44,7 +45,7 @@ module X
             output_value = output_value_for(value)
             css_list = options.delete(:class).to_s.split(/\s+/).unshift('editable')
             css_list << classes[output_value] if classes
-            type = options.delete(:type){ default_type_for(value) }
+            type = options.delete(:type){ default_type_for(value_type) }
             css   = css_list.compact.uniq.join(' ')
             tag   = options.delete(:tag){ 'span' }
             placeholder = options.delete(:placeholder){ title }
@@ -72,17 +73,17 @@ module X
             })
 
             content_tag tag, html_options do
-              safe_join(source_values_for(value, source), tag(:br)) unless %w(select checklist).include? data[:type]
+              safe_join(source_values_for(value, value_type, source), tag(:br)) unless %w(select checklist).include? data[:type]
             end
           else
-            error || safe_join(source_values_for(value, source), tag(:br))
+            error || safe_join(source_values_for(value, value_type, source), tag(:br))
           end
         end
 
         private
 
         def output_value_for(value)
-          value = case value
+          case value
           when TrueClass
             '1'
           when FalseClass
@@ -94,12 +95,10 @@ module X
           else
             value.to_s
           end
-
-          value
         end
 
-        def source_values_for(value, source = nil)
-          source ||= default_source_for value
+        def source_values_for(value, value_type, source = nil)
+          source ||= default_source_for value_type
 
           values = Array.wrap(value)
 
@@ -110,20 +109,33 @@ module X
           end
         end
 
-        def default_type_for(value)
+        def default_value_type_for(object,method, value)
           case value
-          when TrueClass, FalseClass
+            when TrueClass, FalseClass
+              :boolean
+            when Array
+              :array
+            else
+              # try to guess the value type from active record
+              object.try(:column_for_attribute, method).try(:type)
+              # TODO: Test for enumeration and association type
+          end
+        end
+
+        def default_type_for(value_type)
+          case value_type
+          when :boolean
             'select'
-          when Array
+          when :array
             'checklist'
           else
             'text'
           end
         end
 
-        def default_source_for(value)
-          case value
-          when TrueClass, FalseClass
+        def default_source_for(value_type)
+          case value_type
+          when :boolean
             { '1' => 'Yes', '0' => 'No' }
           end
         end
