@@ -9,6 +9,7 @@ module X
         
         def class_options_for(object)
           class_options = options.fetch(:class_options, {})
+          object = object.last if object.is_a?(Array)
           class_options.fetch(object.class.name, {})
         end
         
