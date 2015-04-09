@@ -32,7 +32,8 @@ unless EditableForm
         else
           obj[myName] = myValue
 
-        params[model] = obj
+        params[model] ||= {}
+        $.extend(params[model], obj)
 
         delete params.name
         delete params.value
