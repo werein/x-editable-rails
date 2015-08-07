@@ -105,6 +105,11 @@ module X
 
           if source && ( source.first.is_a?(String) || source.kind_of?(Hash) )
             values.map{|item| source[output_value_for item]}
+          elsif source && source.first.is_a?(Hash)
+            # Support for select dropdown array format
+            output_value = output_value_for(value)
+            value = source.flat_map { |e| e[:children] || e }.detect { |c| c[:value].to_s == output_value }.try { |e| e[:text] }
+            value ? [value] : values
           else
             values
           end
