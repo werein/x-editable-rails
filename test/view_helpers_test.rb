@@ -4,15 +4,16 @@ class ViewHelpersTest < ActionView::TestCase
   include X::Editable::Rails::ViewHelpers
 
   class Subject < OpenStruct
-    extend ActiveModel::Naming
-    extend ActiveModel::Translation
+    include ActiveModel::Model
+
+    attr_accessor :id, :name, :content
+
+    def self.model_name
+      ActiveModel::Name.new(self, nil, "Page")
+    end
 
     def initialize(attributes={})
       super(attributes.merge(id: 1, name: "test subject"))
-    end
-
-    def to_param
-      "#{id}-#{name}".parameterize
     end
   end
 
