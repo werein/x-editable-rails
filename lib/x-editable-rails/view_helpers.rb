@@ -61,7 +61,7 @@ module X
               url:    url,
               nested: nested,
               nid:    nid
-            }.merge(options)
+            }.merge(options.symbolize_keys)
 
             data.reject!{|_, value| value.nil?}
 
