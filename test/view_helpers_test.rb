@@ -52,6 +52,14 @@ class ViewHelpersTest < ActionView::TestCase
                  "ViewHelpers#editable should generate content tag with html options"
   end
 
+  test "editable should generate content tag with data attributes" do
+    subject = Subject.new
+
+    assert_match %r{<span[^>]+data-model="page"},
+                 editable(subject, :name),
+                 "ViewHelpers#editable should generate content tag with html options"
+  end
+
   private
 
   def view_helpers_test_subject_path(subject)
