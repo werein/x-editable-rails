@@ -4,15 +4,16 @@ class ViewHelpersTest < ActionView::TestCase
   include X::Editable::Rails::ViewHelpers
 
   class Subject < OpenStruct
-    extend ActiveModel::Naming
-    extend ActiveModel::Translation
+    include ActiveModel::Model
+
+    attr_accessor :id, :name, :content
+
+    def self.model_name
+      ActiveModel::Name.new(self, nil, "Page")
+    end
 
     def initialize(attributes={})
       super(attributes.merge(id: 1, name: "test subject"))
-    end
-
-    def to_param
-      "#{id}-#{name}".parameterize
     end
   end
 
@@ -48,6 +49,14 @@ class ViewHelpersTest < ActionView::TestCase
 
     assert_match %r{<span[^>]+title="First Title"},
                  editable(subject, :name, title: "First Title", html: { title: 'Second Title' }),
+                 "ViewHelpers#editable should generate content tag with html options"
+  end
+
+  test "editable should generate content tag with data attributes" do
+    subject = Subject.new
+
+    assert_match %r{<span[^>]+data-model="page"},
+                 editable(subject, :name),
                  "ViewHelpers#editable should generate content tag with html options"
   end
 
