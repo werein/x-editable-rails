@@ -1,5 +1,7 @@
 # X::Editable::Rails
 
+[![Build Status](https://travis-ci.org/werein/x-editable-rails.svg)](https://travis-ci.org/werein/x-editable-rails)  [![Code Climate](https://codeclimate.com/github/werein/x-editable-rails/badges/gpa.svg)](https://codeclimate.com/github/werein/x-editable-rails) [![Test coverage](https://codeclimate.com/github/werein/x-editable-rails/badges/coverage.svg)](https://codeclimate.com/github/werein/x-editable-rails) [![Version](https://badge.fury.io/rb/x-editable-rails.svg)](https://badge.fury.io/rb/x-editable-rails) [![Dependencies](https://gemnasium.com/werein/x-editable-rails.svg)](https://gemnasium.com/werein/x-editable-rails)
+
 X-editable for Rails
 
 ## Installation
