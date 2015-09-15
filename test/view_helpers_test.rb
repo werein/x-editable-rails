@@ -57,7 +57,11 @@ class ViewHelpersTest < ActionView::TestCase
 
     assert_match %r{<span[^>]+data-model="page"},
                  editable(subject, :name),
-                 "ViewHelpers#editable should generate content tag with html options"
+                 "ViewHelpers#editable should generate content tag with data attributes"
+
+    assert_no_match %r{<span[^>]+data-model="page"},
+                    editable(subject, :name, model: "custom"),
+                    "ViewHelpers#editable should generate content tag with data attributes"
   end
 
   private
