@@ -72,7 +72,12 @@ module X
             })
 
             content_tag tag, html_options do
-              safe_join(source_values_for(value, source), tag(:br)) unless %w(select checklist).include? data[:type]
+              if %w(select checklist).include? data[:type].to_s
+                content = source.detect { |t| t[:value].to_i == value.to_i }
+                content.present? ? content[:text] : ""
+              else
+                safe_join(source_values_for(value, source), tag(:br))
+              end
             end
           else
             error || safe_join(source_values_for(value, source), tag(:br))
