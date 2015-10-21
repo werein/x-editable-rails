@@ -6,7 +6,7 @@ class ViewHelpersTest < ActionView::TestCase
   class Subject < OpenStruct
     include ActiveModel::Model
 
-    attr_accessor :id, :name, :content
+    attr_accessor :id, :name, :content, :active
 
     def self.model_name
       ActiveModel::Name.new(self, nil, "Page")
@@ -62,6 +62,36 @@ class ViewHelpersTest < ActionView::TestCase
     assert_no_match %r{<span[^>]+data-model="page"},
                     editable(subject, :name, model: "custom"),
                     "ViewHelpers#editable should generate content tag with data attributes"
+  end
+
+  test "editable should generate content tag with the current value" do
+    subject_1 = Subject.new(content: "foo")
+
+    assert_match %r{<span[^>]+>foo</span>},
+                 editable(subject_1, :content),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+>foo</span>},
+                 editable(subject_1, :content, type: "select", source: ["foo", "bar"]),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+>Foo</span>},
+                 editable(subject_1, :content, type: "select", source: [["foo", "Foo"], ["bar", "Bar"]]),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+>Foo</span>},
+                 editable(subject_1, :content, type: "select", source: { "foo" => "Foo", "bar" => "Bar" }),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+>Foo</span>},
+                 editable(subject_1, :content, type: "select", source: [{ text: "Foo", value: "foo" }, { text: "Bar", value: "bar" }]),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    subject_2 = Subject.new(active: true)
+
+    assert_match %r{<span[^>]+>Yes</span>},
+                 editable(subject_2, :active),
+                 "ViewHelpers#editable should generate content tag with the current value"
   end
 
   private
