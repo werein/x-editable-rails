@@ -73,7 +73,7 @@ module X
 
             content_tag tag, html_options do
               if %w(select checklist).include? data[:type].to_s
-                inner_content = source.to_a.select { |t| t[:value].to_i == value.to_i }.first
+                inner_content = source.to_a.find { |t| t[:value].to_i == value.to_i }
                 inner_content.present? ? inner_content[:text] : ""
               else
                 safe_join(source_values_for(value, source), tag(:br))
