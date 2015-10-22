@@ -73,8 +73,9 @@ module X
 
             content_tag tag, html_options do
               if %w(select checklist).include? data[:type].to_s
-                content = source.detect { |t| t[:value].to_i == value.to_i }
-                content.present? ? content[:text] : ""
+                source = normalize_source(source)
+                content = source.detect { |t| output_value == output_value_for(t[0]) }
+                content.present? ? content[1] : ""
               else
                 safe_join(source_values_for(value, source), tag(:br))
               end
@@ -85,6 +86,16 @@ module X
         end
 
         private
+
+        def normalize_source(source)
+          source.map do |el|
+            if el.is_a? Array
+              el
+            else
+              [el[:value], el[:text]]
+            end
+          end
+        end
 
         def output_value_for(value)
           value = case value
