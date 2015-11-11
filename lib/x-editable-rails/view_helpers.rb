@@ -37,7 +37,7 @@ module X
             nid     = options.delete(:nid)
             nested  = options.delete(:nested)
             title   = options.delete(:title) do
-              klass = nested ? object.class.const_get(nested.to_s.singularize.capitalize) : object.class
+              klass = nested ? object.class.const_get(nested.to_s.classify) : object.class
               klass.human_attribute_name(method)
             end
 
