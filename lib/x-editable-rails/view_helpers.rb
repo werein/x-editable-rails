@@ -33,7 +33,7 @@ module X
           html_options = options.delete(:html){ Hash.new }
 
           if xeditable?(object)
-            model   = object.class.model_name.element
+            model   = object.class.model_name.param_key
             nid     = options.delete(:nid)
             nested  = options.delete(:nested)
             title   = options.delete(:title) do
