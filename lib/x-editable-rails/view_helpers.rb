@@ -31,6 +31,7 @@ module X
           classes = format_source(options.delete(:classes), value)
           error   = options.delete(:e)
           html_options = options.delete(:html){ Hash.new }
+          full_class = options.delete(:full_class)
 
           if xeditable?(object)
             model   = object.class.name.split('::').last.underscore
@@ -46,6 +47,7 @@ module X
             css_list << classes[output_value] if classes
             type = options.delete(:type){ default_type_for(value) }
             css   = css_list.compact.uniq.join(' ')
+            css = full_class if full_class
             tag   = options.delete(:tag){ 'span' }
             placeholder = options.delete(:placeholder){ title }
 
