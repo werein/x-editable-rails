@@ -72,7 +72,7 @@ module X
             })
 
             content_tag tag, html_options do
-              if %w(select checklist).include? data[:type].to_s
+              if %w(select checklist).include?(data[:type].to_s) && !source.is_a?(String)
                 source = normalize_source(source)
                 content = source.detect { |t| output_value == output_value_for(t[0]) }
                 content.present? ? content[1] : ""

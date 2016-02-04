@@ -94,6 +94,14 @@ class ViewHelpersTest < ActionView::TestCase
                  "ViewHelpers#editable should generate content tag with the current value"
   end
 
+  test "editable should store the source url as a data attribute" do
+    subject = Subject.new
+    assert_match %r{<span[^>]+data-source="http://example.org"},
+                 editable(subject, :name, type: "select",
+                 source: "http://example.org"),
+                 "ViewHelpers#editable should generate content tag with url source as a data attribute"
+  end
+
   private
 
   def view_helpers_test_subject_path(subject)
