@@ -106,6 +106,30 @@ class ViewHelpersTest < ActionView::TestCase
                  "ViewHelpers#editable should generate content tag with url source as a data attribute"
   end
 
+  test "editable should generate content tag without current value" do
+    subject_1 = Subject.new(content: nil)
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content, type: "select", source: ["foo", "bar"]),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content, type: "select", source: [["foo", "Foo"], ["bar", "Bar"]]),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content, type: "select", source: { "foo" => "Foo", "bar" => "Bar" }),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content, type: "select", source: [{ text: "Foo", value: "foo" }, { text: "Bar", value: "bar" }]),
+                 "ViewHelpers#editable should generate content tag with the current value"
+  end
+
   private
 
   def view_helpers_test_subject_path(subject)

@@ -152,11 +152,9 @@ module X
               if source.is_a?(Array) && source.first.is_a?(String) && source.size == 2
                 { '1' => source[0], '0' => source[1] }
               end
-            when String
+            else
               if source.is_a?(Array) && source.first.is_a?(String)
-                source.inject({}){|hash, key| hash.merge(key => key)}
-              elsif source.is_a?(Hash)
-                source
+                source.map { |v| { value: v, text: v } }
               end
             end
 
