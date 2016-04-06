@@ -88,6 +88,7 @@ module X
         private
 
         def normalize_source(source)
+          return [] unless source
           source.map do |el|
             if el.is_a? Array
               el

@@ -87,6 +87,10 @@ class ViewHelpersTest < ActionView::TestCase
                  editable(subject_1, :content, type: "select", source: [{ text: "Foo", value: "foo" }, { text: "Bar", value: "bar" }]),
                  "ViewHelpers#editable should generate content tag with the current value"
 
+    refute_match %r{data-source=},
+                 editable(subject_1, :content, type: "select"),
+                 "ViewHelpers#editable should generate content tag without source"
+
     subject_2 = Subject.new(active: true)
 
     assert_match %r{<span[^>]+>Yes</span>},
