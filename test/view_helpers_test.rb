@@ -87,6 +87,10 @@ class ViewHelpersTest < ActionView::TestCase
                  editable(subject_1, :content, type: "select", source: [{ text: "Foo", value: "foo" }, { text: "Bar", value: "bar" }]),
                  "ViewHelpers#editable should generate content tag with the current value"
 
+    refute_match %r{data-source=},
+                 editable(subject_1, :content, type: "select"),
+                 "ViewHelpers#editable should generate content tag without source"
+
     subject_2 = Subject.new(active: true)
 
     assert_match %r{<span[^>]+>Yes</span>},
@@ -100,6 +104,30 @@ class ViewHelpersTest < ActionView::TestCase
                  editable(subject, :name, type: "select",
                  source: "http://example.org"),
                  "ViewHelpers#editable should generate content tag with url source as a data attribute"
+  end
+
+  test "editable should generate content tag without current value" do
+    subject_1 = Subject.new(content: nil)
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content, type: "select", source: ["foo", "bar"]),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content, type: "select", source: [["foo", "Foo"], ["bar", "Bar"]]),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content, type: "select", source: { "foo" => "Foo", "bar" => "Bar" }),
+                 "ViewHelpers#editable should generate content tag with the current value"
+
+    assert_match %r{<span[^>]+></span>},
+                 editable(subject_1, :content, type: "select", source: [{ text: "Foo", value: "foo" }, { text: "Bar", value: "bar" }]),
+                 "ViewHelpers#editable should generate content tag with the current value"
   end
 
   private
