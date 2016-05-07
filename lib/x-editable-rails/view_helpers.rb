@@ -26,18 +26,29 @@ module X
 
           url     = options.delete(:url){ polymorphic_path(object) }
           object  = object.last if object.kind_of?(Array)
-          value   = options.delete(:value){ object.send(method) }
-          source  = options[:source] ? format_source(options.delete(:source), value) : default_source_for(value)
-          classes = format_source(options.delete(:classes), value)
           error   = options.delete(:e)
           html_options = options.delete(:html){ Hash.new }
 
           if xeditable?(object)
-            model   = object.class.model_name.param_key
-            nid     = options.delete(:nid)
-            nested  = options.delete(:nested)
-            title   = options.delete(:title) do
-              klass = nested ? object.class.const_get(nested.to_s.classify) : object.class
+            model    = object.class.model_name.param_key
+            nid      = options.delete(:nid)
+            nested   = options.delete(:nested)
+            nest_def = options.delete(:nest_def)
+
+            deepest_obj = nest_def ? dig_nested_obj(object, nest_def) : object
+            value = options.delete(:value){
+              nest_def ?  deepest_obj.send(method) : object.send(method)
+            }
+            source  = options[:source] ? format_source(options.delete(:source), value) : default_source_for(value)
+            classes = format_source(options.delete(:classes), value)
+
+
+            title    = options.delete(:title) do
+              if nest_def
+                klass = nest_def.is_a?(Array) ? object.class.const_get(nest_def.last.keys.first.to_s.classify) : object.class.const_get(nest_def.keys.first.to_s.classify)
+              else
+                klass = nested ? object.class.const_get(nested.to_s.classify) : object.class
+              end
               klass.human_attribute_name(method)
             end
 
@@ -54,13 +65,14 @@ module X
               type:   type,
               model:  model,
               name:   method,
-              value:  ( type == 'wysihtml5' ? Base64.encode64(output_value) : output_value ), 
+              value:  ( type == 'wysihtml5' ? Base64.encode64(output_value) : output_value ),
               placeholder: placeholder,
               classes: classes,
               source: source,
               url:    url,
               nested: nested,
-              nid:    nid
+              nid:    nid,
+              nest_def: nest_def
             }.merge(options.symbolize_keys)
 
             data.reject!{|_, value| value.nil?}
@@ -143,6 +155,33 @@ module X
           when TrueClass, FalseClass
             { '1' => 'Yes', '0' => 'No' }
           end
+        end
+
+        def dig_nested_obj(obj, nested)
+          case(nested)
+            when Array
+              obj = nested.inject(obj){|memo, n|
+                attr = n.keys.first
+                id = n.values.first
+                case(memo.class.reflect_on_association(attr))
+                  when ActiveRecord::Reflection::HasOneReflection
+                    memo = memo.send(attr)
+                  when ActiveRecord::Reflection::HasManyReflection
+                    memo = memo.send(attr).find_by(id: id)
+                end
+                memo
+              }
+            when Hash
+              attr = nested.keys.first
+              id = nested.values.first
+              obj = case(obj.class.reflect_on_association(attr))
+                when ActiveRecord::Reflection::HasOneReflection
+                  obj.send(attr)
+                when ActiveRecord::Reflection::HasManyReflection
+                  obj.send(attr).find_by(id: id)
+              end
+          end
+          return obj
         end
 
         # helper method that take some shorthand source definitions and reformats them
