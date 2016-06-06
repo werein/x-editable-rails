@@ -32,9 +32,10 @@ module X
           error   = options.delete(:e)
           html_options = options.delete(:html){ Hash.new }
           full_class = options.delete(:full_class)
+          model_name = options.delete(:model)
 
           if xeditable?(object)
-            model   = object.class.name.split('::').last.underscore
+            model   = model_name || object.class.name.split('::').last.underscore
             nid     = options.delete(:nid)
             nested  = options.delete(:nested)
             title   = options.delete(:title) do
