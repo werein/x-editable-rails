@@ -1,1 +1,1 @@
-web: cd test/dummy && bundle exec rails c
+web: cd test/dummy && bin/rails server -p 80 -e production
