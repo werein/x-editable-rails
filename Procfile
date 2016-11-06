@@ -1,1 +1,1 @@
-web: cd test/dummy && bin/rails server -e production -p $PORT
+web: cd test/dummy && bin/rails server -p $PORT
