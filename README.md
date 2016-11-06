@@ -4,6 +4,10 @@
 
 X-editable for Rails
 
+## Live demo
+
+Checkout live demo [here](https://x-editable-rails.herokuapp.com/?denied=true) 
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -77,8 +81,8 @@ And related stylesheets:
 
 ### Making Things Editable
 
-`x-editable-rails` provides a helper method in your view to make your model values editable. 
-By default, you need to specify the model and property that should be editable. 
+`x-editable-rails` provides a helper method in your view to make your model values editable.
+By default, you need to specify the model and property that should be editable.
 A `span` element is rendered with `data-*` attributes used by `x-editable`.
 
 ```ruby
@@ -154,14 +158,14 @@ end
 
 ### "Don't Repeat Yourself" Templates
 
-To make your views cleaner, you can specify all your options for each class and attribute in a YAML configuration file. 
+To make your views cleaner, you can specify all your options for each class and attribute in a YAML configuration file.
 Attributes where the `title` or `placeholder` are not different except maybe capitalized can be left out because they are automatically capitalized when rendered (see above).
 
-This example uses the `MailingList` class and its attributes. 
-The attribute value can be a string, which is used as the `title` and `placeholder`. 
+This example uses the `MailingList` class and its attributes.
+The attribute value can be a string, which is used as the `title` and `placeholder`.
 If you want to specify other options, create a hash of options.
 
-Install configuration file like this: `rails g x_editable_rails:install`, this step is not necessary 
+Install configuration file like this: `rails g x_editable_rails:install`, this step is not necessary
 
 ```yaml
 class_options:
