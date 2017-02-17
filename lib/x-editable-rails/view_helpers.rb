@@ -37,7 +37,7 @@ module X
             nid     = options.delete(:nid)
             nested  = options.delete(:nested)
             title   = options.delete(:title) do
-              klass = nested ? object.class.const_get(nested.to_s.classify) : object.class
+              klass = nested ? object.class.const_get(nested.to_s.singularize.capitalize) : object.class
               klass.human_attribute_name(method)
             end
 
@@ -72,13 +72,7 @@ module X
             })
 
             content_tag tag, html_options do
-              if %w(select checklist).include?(data[:type].to_s) && !source.is_a?(String)
-                source = normalize_source(source)
-                content = source.detect { |t| output_value == output_value_for(t[0]) }
-                content.present? ? content[1] : ""
-              else
-                safe_join(source_values_for(value, source), tag(:br))
-              end
+              safe_join(source_values_for(value, source), tag(:br)) unless %w(select checklist).include? data[:type]
             end
           else
             error || safe_join(source_values_for(value, source), tag(:br))
@@ -86,17 +80,6 @@ module X
         end
 
         private
-
-        def normalize_source(source)
-          return [] unless source
-          source.map do |el|
-            if el.is_a? Array
-              el
-            else
-              [el[:value], el[:text]]
-            end
-          end
-        end
 
         def output_value_for(value)
           value = case value
@@ -152,9 +135,11 @@ module X
               if source.is_a?(Array) && source.first.is_a?(String) && source.size == 2
                 { '1' => source[0], '0' => source[1] }
               end
-            else
+            when String
               if source.is_a?(Array) && source.first.is_a?(String)
-                source.map { |v| { value: v, text: v } }
+                source.inject({}){|hash, key| hash.merge(key => key)}
+              elsif source.is_a?(Hash)
+                source
               end
             end
 
