@@ -30,6 +30,7 @@ Choose between the following javascripts:
 
 * bootstrap-editable
 * bootstrap2-editable
+* bootstrap3-editable
 * jqueryui-editable
 * jquery-editable-poshytip
 
@@ -44,6 +45,7 @@ Choose the corresponding stylesheets:
 
 * bootstrap-editable
 * bootstrap2-editable
+* bootstrap3-editable
 * jqueryui-editable
 * jquery-editable
 
