@@ -6,8 +6,8 @@ require 'x-editable-rails/version'
 Gem::Specification.new do |spec|
   spec.name          = "x-editable-rails"
   spec.version       = X::Editable::Rails::VERSION
-  spec.authors       = ["Jiri Kolarik"]
-  spec.email         = ["jiri.kolarik@imin.cz"]
+  spec.authors       = ["We're in"]
+  spec.email         = ["info@wereinhq.com"]
   spec.description   = %q{X-editable for Rails}
   spec.summary       = %q{X-editable for Rails}
   spec.homepage      = "https://github.com/werein/x-editable-rails"
