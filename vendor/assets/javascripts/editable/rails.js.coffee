@@ -1,3 +1,3 @@
-#= require ./rails/editable_form
-#= require ./rails/data_classes
-#= require ./rails/error_handling
+#= require editable/rails/editable_form
+#= require editable/rails/data_classes
+#= require editable/rails/error_handling
