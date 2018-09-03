@@ -81,7 +81,7 @@ module X
               end
             end
           else
-            error || safe_join(source_values_for(value, source), tag(:br))
+            error || safe_join(source_values_for(value || options[:emptytext], source), tag(:br))
           end
         end
 
