@@ -1,4 +1,5 @@
 unless EditableForm
+  $ = jQuery
   EditableForm = $.fn.editableform.Constructor
   EditableForm.prototype.saveWithUrlHook = (value) ->
     originalUrl   = @options.url
