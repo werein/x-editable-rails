@@ -136,6 +136,34 @@ editable @model, :enabled, source: source, classes: classes, class: "label"
 %h1= editable [picture.gallery, picture], :name, nested: :translations, nid: picture.translation.id
 ```
 
+* **nest_def (takes precedence to the two options above)** - Hash or array of hash that describes the nestd attributes
+
+```ruby
+class Group << ActiveRecord::Base
+  has_many :users
+end
+
+class User << ActiveRecord::Base
+  # name: string
+  belongs_to :group
+  has_many :posts
+end
+
+class Post << ActiveRecord::Base
+  # title: string
+  belongs_to :user
+end
+
+
+%h1= editable @group, :name, nest_def: {users: @user.id}
+#=> the params will be {group: {users_attributes: {id: <@user.id>, name: <name>}}}
+
+%h1= editable @group, :title, nest_def: [{users: @user.id}, {posts: @post.id}]
+#=> the params will be {group: {users_attributes: {id: <@user.id>, posts_attributes: {id: <@post.id>, title: <title>} }}
+# Note that the order of array matters.
+
+```
+
 ### Authorization
 
 Add a helper method to your controllers to indicate if `x-editable` should be enabled.

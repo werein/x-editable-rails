@@ -1,10 +1,31 @@
 unless EditableForm
+  build_nested_param = (attr_to_update, updated_value, nest_def)->
+    ret = {}
+    last = ret
+    if(Array.isArray(nest_def))
+      for obj in nest_def
+        attr = Object.keys(obj)[0]
+        key = attr + "_attributes"
+        id = obj[attr]
+        last[key] = {id: id}
+        last = last[key]
+    else if (typeof nest_def == "object" && nest_def != null)
+      attr = Object.keys(nest_def)[0]
+      key = attr + "_attributes"
+      id = nest_def[attr]
+      last[key] = {id: id}
+      last = last[key]
+
+    last[attr_to_update] = updated_value
+    ret
+
   EditableForm = $.fn.editableform.Constructor
   EditableForm.prototype.saveWithUrlHook = (value) ->
     originalUrl   = @options.url
     model         = @options.model
     nestedName    = @options.nested
     nestedId      = @options.nid
+    nestDef       = @options.nestDef
     nestedLocale  = @options.locale
 
     @options.url = (params) =>
@@ -20,7 +41,9 @@ unless EditableForm
 
         obj = {}
 
-        if nestedName
+        if nestDef
+          obj = build_nested_param(myName, myValue, nestDef)
+        else if nestedName
           nested          = {}
           nested[myName]  = myValue
           nested['id']    = nestedId
